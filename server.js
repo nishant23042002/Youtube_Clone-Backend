@@ -1,25 +1,26 @@
 import express from "express"
 import dotenv from "dotenv"
 import { connectDB } from "./DataBase/DB.js";
+import cors from "cors"
+import userRoutes from "./routes/userRoute.route.js"
 
 dotenv.config();
+
 const app = express();
-
-
-connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
+app.use(cors());
+
+connectDB();
+
+app.use("/api/v1/user", userRoutes)
 
 
-app.get("/", (req, res) => {
-    res.send("Welcome to Youtube-Clone Backend API")
-})
 
-
-const PORT = process.env.PORT || 4001
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
     console.log(`Server running on PORT: http://localhost:${PORT}`);
 });

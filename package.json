@@ -3,25 +3,23 @@
   "version": "1.0.0",
   "description": "\"A Youtube-Clone using MERN\"",
   "keywords": [
-   "youtube",
-   "videos",
-   "comments",
-   "likes",
-   "thumbnails"
+    "youtube",
+    "videos",
+    "comments",
+    "likes",
+    "thumbnails"
   ],
   "license": "ISC",
   "author": "Nishant Sapkal",
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
+    "start": "nodemon server.js"
   },
   "dependencies": {
+    "nodemon": "^3.1.10",
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
