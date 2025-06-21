@@ -2,7 +2,6 @@ import User from "../models/User.model.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv";
-import { use } from "react";
 dotenv.config();
 
 
