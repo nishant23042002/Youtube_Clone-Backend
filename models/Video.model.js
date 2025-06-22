@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
 const videoSchema = new mongoose.Schema({
-    videoFile: {
+    title: {
         type: String,
         required: true
     },
     thumbnail: {
         type: String,
     },
-    title: {
+    videoFile: {
         type: String,
         required: true
     },
@@ -16,21 +16,38 @@ const videoSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    channelId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Channel'
+    },
+    uploader: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    disLikes: {
+        type: Number,
+        default: 0
+    },
     thumbnailduration: {
         type: Number,
         required: true
     },
-    videoViews: {
-        type: Number,
-        default: 0
+    uploadDate: {
+        type: Date,
+        required: true
     },
     isAvaiable: {
         type: Boolean,
         default: true
-    },
-    vidoeOwner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
     }
 
 }, { timestamps: true })

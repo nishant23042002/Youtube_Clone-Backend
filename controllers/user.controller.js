@@ -50,7 +50,8 @@ export const registerUser = async (req, res) => {
             token,
             registeredUser: {
                 userId: newUser._id,
-                userEmail: newUser.email
+                userEmail: newUser.email,
+                profilePic_URL: profilePic.url
             }
         });
     }
