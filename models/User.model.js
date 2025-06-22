@@ -1,14 +1,20 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const userSchema = mongoose.Schema({
     userName: {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     email: {
         type: String,
         required: true,
+        lowercase: true,
         unique: true
     },
     profilePicture: {
@@ -41,6 +47,20 @@ userSchema.methods.comparePassword = async function (userPassword) {
     return await bcrypt.compare(userPassword, this.password);
 };
 
+userSchema.methods.generateAccessToken = function () {
+    //generating token while registering user
+    return jwt.sign(
+        {
+            userId: this._id,
+            username: this.userName,
+            email: this.email
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        }
+    )
+}
 
 const User = mongoose.model("User", userSchema)
 

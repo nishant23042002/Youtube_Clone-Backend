@@ -1,8 +1,4 @@
 import User from "../models/User.model.js"
-import jwt from "jsonwebtoken"
-import dotenv from "dotenv";
-dotenv.config();
-
 
 
 export const registerUser = async (req, res) => {
@@ -21,10 +17,8 @@ export const registerUser = async (req, res) => {
         const newUser = new User({ userName, email, password });
         await newUser.save();
 
-        //generating token while registering user
-        const token = jwt.sign({ userId: newUser._id, username: newUser.userName, email: newUser.email }, process.env.JWT_SECRET, { expiresIn: "1d" })
-
-        return res.status(201).json({ message: "User registered", token });
+        const token = newUser.generateAccessToken();
+        return res.status(201).json({ message: "User registered", token, registeredUser: { userId: newUser._id, userEmail: newUser.email } });
     }
     catch (err) {
         console.error("Error in registerUser:", err);
@@ -39,6 +33,11 @@ export const loginUser = async (req, res) => {
     try {
         let { email, password } = req.body;
 
+        // Check if both fields are provided
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required." });
+        }
+
         //getting user by his/her emailId
         const user = await User.findOne({ email })
         if (!user) {
@@ -51,8 +50,9 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: "Invalid Email or Password" })
         }
 
-        // Generate JWT token on successful login
-        const token = jwt.sign({ userId: user._id, name: user.userName, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        // Generate access token
+        const token = user.generateAccessToken();
+
         // Respond with token and basic user info
         res.status(200).json({ message: "Login successfully", token, loggedInUser: { name: user.userName, email: user.email } })
     }
