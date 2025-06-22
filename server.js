@@ -4,6 +4,8 @@ import { connectDB } from "./DataBase/DB.js";
 import cors from "cors"
 import userRoutes from "./routes/userRoute.route.js"
 import videoRoutes from "./routes/videoRoute.route.js"
+import channelRoutes from "./routes/channelRoute.route.js"
+import commentRoutes from "./routes/commentRoute.route.js"
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ connectDB();
 
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1/videos", videoRoutes)
+app.use("api/v1/channels", channelRoutes)
+app.use("api/v1/comments", commentRoutes)
 
 
 
