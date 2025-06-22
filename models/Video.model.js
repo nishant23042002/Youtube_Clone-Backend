@@ -3,10 +3,12 @@ import mongoose from "mongoose";
 const videoSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     thumbnail: {
         type: String,
+        default: ""
     },
     videoFile: {
         type: String,
@@ -18,7 +20,8 @@ const videoSchema = new mongoose.Schema({
     },
     channelId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Channel'
+        ref: "Channel",
+        required: true
     },
     uploader: {
         type: mongoose.Schema.Types.ObjectId,
@@ -43,9 +46,9 @@ const videoSchema = new mongoose.Schema({
     },
     uploadDate: {
         type: Date,
-        required: true
+        default: Date.now
     },
-    isAvaiable: {
+    isAvailable: {
         type: Boolean,
         default: true
     }

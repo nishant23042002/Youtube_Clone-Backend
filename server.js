@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import { connectDB } from "./DataBase/DB.js";
 import cors from "cors"
 import userRoutes from "./routes/userRoute.route.js"
+import videoRoutes from "./routes/videoRoute.route.js"
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cors());
 connectDB();
 
 app.use("/api/v1/user", userRoutes)
+app.use("/api/v1/videos", videoRoutes)
 
 
 
