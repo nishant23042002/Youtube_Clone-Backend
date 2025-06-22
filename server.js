@@ -21,8 +21,8 @@ connectDB();
 
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1/videos", videoRoutes)
-app.use("api/v1/channels", channelRoutes)
-app.use("api/v1/comments", commentRoutes)
+app.use("/api/v1/channels", channelRoutes)
+app.use("/api/v1/comments", commentRoutes)
 
 
 
