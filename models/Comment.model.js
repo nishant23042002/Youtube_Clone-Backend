@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 
 
 const commentSchema = new mongoose.Schema({
-    commentId: {
-        type: String,
-        required: true,
-        unique: true,
-    },
     videoId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Video",
@@ -26,8 +21,8 @@ const commentSchema = new mongoose.Schema({
         default: 0,
     },
     dislikes: {
-        type: Number,
-        default: 0,
+        type: Boolean,
+        default: false,
     },
     isEdited: {
         type: Boolean,
