@@ -6,23 +6,24 @@ dotenv.config();
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_API_KEY,
-    secret: process.env.CLOUD_API_KEY_SECRET
+    api_secret: process.env.CLOUD_API_KEY_SECRET
 })
 
-export const uploadCloudinary = async (path) => {
+export const uploadCloudinary = async (localFilePath) => {
     try {
-        if (!path) return null;
+        if (!localFilePath) return null;
 
         //upload on cloudinary
-        const res = await cloudinary.uploader.upload(path, {
-            resource_type: "auto"
+        const res = await cloudinary.uploader.upload(localFilePath, {
+            resource_type: "auto",
+            folder: "public/uploads"
         })
 
         console.log("File is successfully uploaded", res.url);
         return res
     } catch (error) {
         //once file is uploaded it will get removed from our local public folder
-        fs.unlinkSync(path)
+        fs.unlinkSync(localFilePath)
         return null;
     }
 }

@@ -1,8 +1,11 @@
 import User from "../models/User.model.js"
+import { uploadCloudinary } from "../utils/cloudinary.service.js";
 
 
 export const registerUser = async (req, res) => {
     try {
+        console.log("Files:", req.files);
+
         let { userName, email, password } = req.body;
         if (!userName || !email || !password) {
             return res.send(401).json({ message: "Please provide valid Information..." })
@@ -14,11 +17,42 @@ export const registerUser = async (req, res) => {
             return res.status(409).json({ message: "Email already exists" });
         }
 
-        const newUser = new User({ userName, email, password });
-        await newUser.save();
+        const profilePic_URL = req.files?.profilePicture?.[0];
+        const localPath = profilePic_URL?.path;
+        if (!profilePic_URL) {
+            res.status(400).json({ message: "Please upload Profile Picture" });
+        }
+        // check
+        if (!localPath || typeof localPath !== "string") {
+            return res.status(400).json({ message: "Invalid file path" });
+        }
+
+        const profilePic = await uploadCloudinary(localPath)
+        console.log(profilePic);
+        if (!profilePic || !profilePic.url) {
+            return res.status(400).json({ message: "Profile picture upload failed." });
+        }
+
+        const newUser = await User.create({
+            userName,
+            email,
+            profilePicture: profilePic.url,
+            password
+        });
+
+        if (!newUser) {
+            res.status(400).json({ message: "Something went wrong while registering the user" })
+        }
 
         const token = newUser.generateAccessToken();
-        return res.status(201).json({ message: "User registered", token, registeredUser: { userId: newUser._id, userEmail: newUser.email } });
+        return res.status(201).json({
+            message: "User registered",
+            token,
+            registeredUser: {
+                userId: newUser._id,
+                userEmail: newUser.email
+            }
+        });
     }
     catch (err) {
         console.error("Error in registerUser:", err);

@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        // required: [true, "Please select a Profile Picture!!"]
+        required: [true, "Please select a Profile Picture!!"]
     },
     watchTime: {
         type: mongoose.Schema.Types.ObjectId,
