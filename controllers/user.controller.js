@@ -1,5 +1,4 @@
 import User from "../models/User.model.js"
-import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv";
 dotenv.config();
@@ -19,10 +18,8 @@ export const registerUser = async (req, res) => {
             return res.status(409).json({ message: "Email already exists" });
         }
 
-        //hashing the pass and saving it in DB
-        const hashPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({ userName, email, password: hashPassword })
-        console.log(newUser);
+        const newUser = new User({ userName, email, password });
+        await newUser.save();
 
         //generating token while registering user
         const token = jwt.sign({ userId: newUser._id, username: newUser.userName, email: newUser.email }, process.env.JWT_SECRET, { expiresIn: "1d" })
@@ -49,7 +46,7 @@ export const loginUser = async (req, res) => {
         }
 
         //comparing password typed by user with the hashed password saved in DB
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        const passwordMatch = await user.comparePassword(password);
         if (!passwordMatch) {
             return res.status(401).json({ message: "Invalid Email or Password" })
         }
@@ -71,7 +68,7 @@ export const loginUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().select("-password");
         return res.status(201).json({ message: "All Users", users: users })
     }
     catch (error) {
