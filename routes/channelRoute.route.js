@@ -5,8 +5,8 @@ import { createChannel, getChannelById, getVideosByChannel, updateChannel } from
 const router = express.Router();
 
 router.post("/", createChannel);
-router.get("/:id", getChannelById); // GET /api/channels/:id
-router.put("/:id", updateChannel); // PUT /api/channels/:id
-router.get("/:id/videos", getVideosByChannel); // GET /api/channels/:id/videos
+router.get("/:id", getChannelById); 
+router.put("/:id", updateChannel); 
+router.get("/:id/videos", getVideosByChannel);
 
 export default router;

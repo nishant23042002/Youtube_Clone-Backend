@@ -2,13 +2,14 @@ import User from "../models/User.model.js"
 import { uploadCloudinary } from "../utils/cloudinary.service.js";
 
 
+// user registering
 export const registerUser = async (req, res) => {
     try {
         console.log("Files:", req.files);
 
         let { userName, email, password } = req.body;
         if (!userName || !email || !password) {
-            return res.send(401).json({ message: "Please provide valid Information..." })
+            return res.status(401).json({ message: "Please provide valid Information..." })
         }
 
         //checking if email already exists in the DB
@@ -20,7 +21,7 @@ export const registerUser = async (req, res) => {
         const profilePic_URL = req.files?.profilePicture?.[0];
         const localPath = profilePic_URL?.path;
         if (!profilePic_URL) {
-            res.status(400).json({ message: "Please upload Profile Picture" });
+            return res.status(400).json({ message: "Please upload Profile Picture" });
         }
         // check
         if (!localPath || typeof localPath !== "string") {
@@ -41,7 +42,7 @@ export const registerUser = async (req, res) => {
         });
 
         if (!newUser) {
-            res.status(400).json({ message: "Something went wrong while registering the user" })
+            return res.status(400).json({ message: "Something went wrong while registering the user" })
         }
 
         const token = newUser.generateAccessToken();
@@ -55,15 +56,14 @@ export const registerUser = async (req, res) => {
             }
         });
     }
-    catch (err) {
-        console.error("Error in registerUser:", err);
-        return res.status(500).json({
-            message: "Internal Server Error",
-            error: err.message,
-        });
+    catch (error) {
+        console.error("Error in registerUser:", error);
+        return res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 }
 
+
+//user login
 export const loginUser = async (req, res) => {
     try {
         let { email, password } = req.body;
@@ -89,7 +89,7 @@ export const loginUser = async (req, res) => {
         const token = user.generateAccessToken();
 
         // Respond with token and basic user info
-        res.status(200).json({ message: "Login successfully", token, loggedInUser: { name: user.userName, email: user.email } })
+        return res.status(200).json({ message: "Login successfully", token, loggedInUser: { name: user.userName, email: user.email } })
     }
     catch (error) {
         console.error("Error in registerUser:", err);
@@ -101,10 +101,12 @@ export const loginUser = async (req, res) => {
 }
 
 
+
+//All registered users
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find().select("-password");
-        return res.status(201).json({ message: "All Users", users: users })
+        return res.status(200).json({ message: "All Users", users: users })
     }
     catch (error) {
         console.error("Error in registerUser:", err);
