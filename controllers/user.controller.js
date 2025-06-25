@@ -8,8 +8,20 @@ export const registerUser = async (req, res) => {
         console.log("Files:", req.files);
 
         let { userName, email, password } = req.body;
-        if (!userName || !email || !password) {
-            return res.status(401).json({ message: "Please provide valid Information..." })
+        if (!userName) {
+            return res.status(401).json({ message: "Please provide your name..." })
+        }
+        if (!email) {
+            return res.status(401).json({ message: "Please provide your email..." })
+        }
+        if (!password) {
+            return res.status(401).json({ message: "Please provide password..." })
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: "Please provide a valid email address." });
         }
 
         //checking if email already exists in the DB
@@ -47,7 +59,7 @@ export const registerUser = async (req, res) => {
 
         const token = newUser.generateAccessToken();
         return res.status(201).json({
-            message: "User registered",
+            message: "User registered. Please Login...",
             token,
             registeredUser: {
                 userId: newUser._id,
@@ -72,6 +84,11 @@ export const loginUser = async (req, res) => {
         if (!email || !password) {
             return res.status(400).json({ message: "Email and password are required." });
         }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: "Please provide a valid email address." });
+        }
 
         //getting user by his/her emailId
         const user = await User.findOne({ email })
@@ -89,7 +106,7 @@ export const loginUser = async (req, res) => {
         const token = user.generateAccessToken();
 
         // Respond with token and basic user info
-        return res.status(200).json({ message: "Login successfully", token, loggedInUser: { name: user.userName, email: user.email } })
+        return res.status(200).json({ message: "Login successfully", token, loggedInUser: { name: user.userName, email: user.email, profilePic_URL: user.profilePicture } })
     }
     catch (error) {
         console.error("Error in registerUser:", err);
