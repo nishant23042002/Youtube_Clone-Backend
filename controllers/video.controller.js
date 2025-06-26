@@ -46,8 +46,8 @@ export const createVideo = async (req, res) => {
 export const getAllVideos = async (req, res) => {
     try {
         //listing videos on the basis of uploader and ordering in ascending
-        const allVideos = await Video.find().populate("uploader", "userName").sort({ createdAt: -1 });
-        return res.status(200).json({ message: "All videos based on uploader.", videosUploaded: allVideos })
+        const allVideos = await Video.find().populate("channelId").sort({ createdAt: -1 });
+        return res.status(200).json({ message: "All videos based on uploader.", videos: allVideos })
     } catch (error) {
         return res.status(500).json({ message: "Internal Server Error", error: error.message });
     }

@@ -42,7 +42,7 @@ const videoSchema = new mongoose.Schema({
     },
     thumbnailduration: {
         type: Number,
-        required: true
+        // required: true
     },
     uploadDate: {
         type: Date,
