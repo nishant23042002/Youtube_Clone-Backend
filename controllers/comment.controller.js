@@ -24,7 +24,7 @@ export const addComment = async (req, res) => {
 export const getCommentsByVideo = async (req, res) => {
     try {
         let { videoId } = req.params;
-        const allComments = await Comment.find({ videoId }).populate("userId", "userName").sort({ createdAt: -1 })
+        const allComments = await Comment.find({ videoId }).populate("userId", "userName profilePicture").sort({ createdAt: -1 })
         if (!allComments) {
             res.status(404).json({ message: "No comments on this video!!!" })
         }
