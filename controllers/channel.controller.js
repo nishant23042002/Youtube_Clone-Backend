@@ -1,21 +1,33 @@
 import Channel from "../models/Channel.model.js"
 import Video from "../models/Video.model.js"
-
+import { uploadCloudinary } from "../utils/cloudinary.service.js";
 
 // 1. CREATE A NEW CHANNEL
 export const createChannel = async (req, res) => {
     try {
-        let { name, description, owner, profilePicture } = req.body;
+        let { name, description, owner } = req.body;
         if (!name || !owner) {
             return res.status(400).json({ error: "Name and owner are required" });
         }
+
+        const profilePic_URL = req.files?.profilePicture?.[0];
+        const localPath = profilePic_URL?.path;
+        if (!profilePic_URL) {
+            return res.status(400).json({ message: "Please upload Profile Picture" });
+        }
+
+        const profilePic = await uploadCloudinary(localPath)
+        if (!profilePic || !profilePic.url) {
+            return res.status(400).json({ message: "Profile picture upload failed." });
+        }
+
 
         const existing = await Channel.findOne({ owner });
         if (existing) {
             return res.status(400).json({ error: "User already has a channel" });
         }
 
-        const newChannel = await Channel.create({ name, description, owner, profilePicture })
+        const newChannel = await Channel.create({ name, description, owner, profilePicture: profilePic.url })
 
         return res.status(201).json({ message: "Channel created successfully", channel: newChannel });
     } catch (error) {

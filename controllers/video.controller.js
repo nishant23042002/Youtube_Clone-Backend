@@ -41,6 +41,46 @@ export const createVideo = async (req, res) => {
 
 
 
+// Update video
+export const updateVideo = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description } = req.body;
+
+        const video = await Video.findById(id);
+        if (!video) return res.status(404).json({ message: "Video not found" });
+
+        if (video.uploader.toString() !== req.user.userId)
+            return res.status(403).json({ message: "Unauthorized to update this video" });
+
+        video.title = title || video.title;
+        video.description = description || video.description;
+
+        await video.save();
+        res.status(200).json({ message: "Video updated", video });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to update video", error: error.message });
+    }
+};
+
+// Delete video
+export const deleteVideo = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const video = await Video.findById(id);
+        if (!video) return res.status(404).json({ message: "Video not found" });
+
+        if (video.uploader.toString() !== req.user.userId)
+            return res.status(403).json({ message: "Unauthorized to delete this video" });
+
+        await video.deleteOne();
+        res.status(200).json({ message: "Video deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to delete video", error: error.message });
+    }
+};
+
 
 
 export const getAllVideos = async (req, res) => {

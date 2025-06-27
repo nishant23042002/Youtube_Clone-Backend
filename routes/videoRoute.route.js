@@ -1,5 +1,6 @@
 import express from "express"
-import { createVideo, getAllVideos } from "../controllers/Video.controller.js";
+import { createVideo, deleteVideo, getAllVideos, updateVideo } from "../controllers/video.controller.js";
+import { isAuthenticated } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -7,6 +8,8 @@ const router = express.Router();
 
 
 router.post("/", createVideo)
+router.put("/:id",isAuthenticated, updateVideo);
+router.delete("/:id",isAuthenticated, deleteVideo);
 router.get("/", getAllVideos)
 
 export default router;

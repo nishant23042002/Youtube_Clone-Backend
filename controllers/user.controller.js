@@ -19,7 +19,6 @@ export const registerUser = async (req, res) => {
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if (!emailRegex.test(email)) {
             return res.status(400).json({ message: "Please provide a valid email address." });
         }
@@ -106,7 +105,7 @@ export const loginUser = async (req, res) => {
         const token = user.generateAccessToken();
 
         // Respond with token and basic user info
-        return res.status(200).json({ message: "Login successfully", token, loggedInUser: { name: user.userName, email: user.email, profilePic_URL: user.profilePicture } })
+        return res.status(200).json({ message: "Login successfully", token, loggedInUser: { name: user.userName, email: user.email, profilePic_URL: user.profilePicture, id:user._id } })
     }
     catch (error) {
         console.error("Error in registerUser:", err);
