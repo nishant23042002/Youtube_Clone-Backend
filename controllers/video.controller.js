@@ -92,3 +92,16 @@ export const getAllVideos = async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 }
+
+export const getVideoById = async (req, res) => {
+    try {
+        let { id } = req.params;
+        const video = await Video.findById(id).populate("channelId");
+        if (!video) {
+            return res.status(404).json({ message: "Video not found" });
+        }
+        res.status(200).json({ video });
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error });
+    }
+};
