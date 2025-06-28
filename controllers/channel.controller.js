@@ -54,6 +54,15 @@ export const getChannelById = async (req, res) => {
 }
 
 
+export const getAllChannels = async (req, res) => {
+    try {
+        const channels = await Channel.find().sort({ createdAt: -1 })
+        res.status(200).json({ message: "All channels", allChannels: channels })
+    } catch (error) {
+        return res.status(500).json({ message: "Failed to get the Channel", error: error.message });
+    }
+}
+
 
 // 3. UPDATE CHANNEL
 export const updateChannel = async (req, res) => {
@@ -87,3 +96,18 @@ export const getVideosByChannel = async (req, res) => {
     }
 }
 
+// 5. GET CHANNEL BY USER ID
+export const getChannelByUserId = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const channel = await Channel.findOne({ owner: userId });
+
+        if (!channel) {
+            return res.status(404).json({ message: "Channel not found for this user" });
+        }
+
+        return res.status(200).json({ message: "Channel fetched successfully", channel });
+    } catch (error) {
+        return res.status(500).json({ message: "Failed to get channel", error: error.message });
+    }
+};

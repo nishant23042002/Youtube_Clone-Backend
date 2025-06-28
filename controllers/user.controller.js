@@ -8,9 +8,7 @@ export const registerUser = async (req, res) => {
         console.log("Files:", req.files);
 
         let { userName, email, password } = req.body;
-        if (!userName) {
-            return res.status(401).json({ message: "Please provide your name..." })
-        }
+      
         if (!email) {
             return res.status(401).json({ message: "Please provide your email..." })
         }
