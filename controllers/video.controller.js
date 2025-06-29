@@ -42,7 +42,7 @@ export const createVideo = async (req, res) => {
 }
 
 
-
+// to be removed before submission
 // Update video
 export const updateVideo = async (req, res) => {
     try {
@@ -105,6 +105,7 @@ export const getAllVideos = async (req, res) => {
     }
 }
 
+// to be removed before submission
 export const getVideoById = async (req, res) => {
     try {
         let { id } = req.params;

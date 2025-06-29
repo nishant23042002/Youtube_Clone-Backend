@@ -54,6 +54,8 @@ export const getChannelById = async (req, res) => {
 }
 
 
+
+// to be removed before submission
 export const getAllChannels = async (req, res) => {
     try {
         const channels = await Channel.find().sort({ createdAt: -1 })

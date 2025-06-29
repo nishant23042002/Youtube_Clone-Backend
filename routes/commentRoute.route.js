@@ -9,6 +9,7 @@ import {isAuthenticated} from "../middlewares/auth.middleware.js"
 
 const router = express.Router();
 
+
 router.post("/:videoId",isAuthenticated, addComment);
 router.get("/:videoId", getCommentsByVideo); 
 router.delete("/:id",isAuthenticated, deleteComment);

@@ -16,15 +16,9 @@ const channelSchema = new mongoose.Schema({
         required: true,
         unique: true, // One user = one channel
     },
-    subscribers: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-        }
-    ],
     profilePicture: {
         type: String,
-        default: "", // Optional: link to channel profile image
+        default: "",
     },
     totalVideos: {
         type: Number,

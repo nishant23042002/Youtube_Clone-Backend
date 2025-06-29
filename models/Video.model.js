@@ -40,19 +40,10 @@ const videoSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    thumbnailduration: {
-        type: Number,
-        // required: true
-    },
     uploadDate: {
         type: Date,
         default: Date.now
-    },
-    isAvailable: {
-        type: Boolean,
-        default: true
     }
-
 }, { timestamps: true })
 
 const Video = mongoose.model("Video", videoSchema)

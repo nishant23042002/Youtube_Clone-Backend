@@ -18,6 +18,8 @@ router.post('/login', loginUser)
 
 router.use(isAuthenticated)
 
+
+// to be removed before submission
 router.get('/', getAllUsers)
 
 export default router

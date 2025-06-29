@@ -20,18 +20,10 @@ const commentSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    dislikes: {
-        type: Boolean,
-        default: false,
-    },
-    isEdited: {
-        type: Boolean,
-        default: false,
-    },
     timestamp: {
         type: Date,
         default: Date.now,
-    },
+    }
 }, { timestamps: true });
 
 

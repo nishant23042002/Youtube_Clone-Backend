@@ -21,10 +21,6 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, "Please select a Profile Picture!!"]
     },
-    watchTime: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Video"
-    },
     password: {
         type: String,
         required: [true, "Password is required!!"],

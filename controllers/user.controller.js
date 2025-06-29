@@ -115,7 +115,7 @@ export const loginUser = async (req, res) => {
 }
 
 
-
+// to be removed before submission
 //All registered users
 export const getAllUsers = async (req, res) => {
     try {

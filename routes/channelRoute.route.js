@@ -11,9 +11,10 @@ router.post("/", upload.fields([
     }
 ]), createChannel);
 router.get("/:id", getChannelById);
-router.put("/:id", updateChannel);
 router.get("/:id/videos", getVideosByChannel);
-router.get("/", getAllChannels);
 router.get("/user/:userId", getChannelByUserId); 
+
+// to be removed before submission
+router.get("/", getAllChannels);
 
 export default router;
