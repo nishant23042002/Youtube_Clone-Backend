@@ -67,6 +67,7 @@ export const deleteComment = async (req, res) => {
 }
 
 
+// 3. Edit A COMMENT
 export const editComment = async (req, res) => {
     try {
         const commentId = req.params.id;

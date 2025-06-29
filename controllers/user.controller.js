@@ -113,20 +113,3 @@ export const loginUser = async (req, res) => {
         });
     }
 }
-
-
-// to be removed before submission
-//All registered users
-export const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find().select("-password");
-        return res.status(200).json({ message: "All Users", users: users })
-    }
-    catch (error) {
-        console.error("Error in registerUser:", err);
-        return res.status(500).json({
-            message: "Internal Server Error",
-            error: err.message,
-        });
-    }
-}

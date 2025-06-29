@@ -55,35 +55,6 @@ export const getChannelById = async (req, res) => {
 
 
 
-// to be removed before submission
-export const getAllChannels = async (req, res) => {
-    try {
-        const channels = await Channel.find().sort({ createdAt: -1 })
-        res.status(200).json({ message: "All channels", allChannels: channels })
-    } catch (error) {
-        return res.status(500).json({ message: "Failed to get the Channel", error: error.message });
-    }
-}
-
-
-// 3. UPDATE CHANNEL
-export const updateChannel = async (req, res) => {
-    try {
-        let { id } = req.params;
-        const updates = req.body;
-
-        const updatedChannel = await Channel.findByIdAndUpdate(id, updates, { new: true });
-        if (!updatedChannel) {
-            return res.status(404).json({ error: "Channel not found" });
-        }
-
-        return res.status(200).json({ message: "Channel updated", channel: updatedChannel });
-    } catch (error) {
-        return res.status(500).json({ message: "Failed to update the channel", error: error.message });
-    }
-}
-
-
 
 // 4. GET ALL VIDEOS BY CHANNEL
 export const getVideosByChannel = async (req, res) => {

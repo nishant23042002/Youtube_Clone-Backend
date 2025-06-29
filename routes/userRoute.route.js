@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllUsers, loginUser, registerUser } from "../controllers/user.controller.js"
+import { loginUser, registerUser } from "../controllers/user.controller.js"
 import { isAuthenticated } from "../middlewares/auth.middleware.js"
 import { upload } from "../middlewares/multer.middleware.js"
 
@@ -18,8 +18,5 @@ router.post('/login', loginUser)
 
 router.use(isAuthenticated)
 
-
-// to be removed before submission
-router.get('/', getAllUsers)
 
 export default router

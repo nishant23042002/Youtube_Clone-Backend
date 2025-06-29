@@ -4,7 +4,7 @@ const channelSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true, // Assuming each channel has a unique name
+        unique: true,
     },
     description: {
         type: String,
