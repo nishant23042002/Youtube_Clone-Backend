@@ -18,7 +18,7 @@ export const createVideo = async (req, res) => {
         if (!title || !videoFile || !description || !channelId || !uploader || !thumbnailduration) {
             return res.status(400).json({ error: "Missing required fields" });
         }
-
+     
         const newVideo = await Video.create({
             title,
             thumbnail,
@@ -71,8 +71,6 @@ export const deleteVideo = async (req, res) => {
         const video = await Video.findById(id);
         if (!video) return res.status(404).json({ message: "Video not found" });
 
-        if (video.uploader.toString() !== req.user.userId)
-            return res.status(403).json({ message: "Unauthorized to delete this video" });
 
         await video.deleteOne();
         res.status(200).json({ message: "Video deleted successfully" });

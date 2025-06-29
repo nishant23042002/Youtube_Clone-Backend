@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/", createVideo)
 router.put("/:id",isAuthenticated, updateVideo);
-router.delete("/:id",isAuthenticated, deleteVideo);
+router.delete("/:id", deleteVideo);
 router.get("/", getAllVideos)
 router.get("/:id", getVideoById);
 

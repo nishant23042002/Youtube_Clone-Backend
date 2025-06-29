@@ -42,7 +42,7 @@ export const createChannel = async (req, res) => {
 export const getChannelById = async (req, res) => {
     try {
         let { id } = req.params;
-        const channel = await Channel.findById(id).populate("owner", "userName");
+        const channel = await Channel.findById(id)
         if (!channel) {
             return res.status(404).json({ error: "Channel not found" });
         }
@@ -111,3 +111,6 @@ export const getChannelByUserId = async (req, res) => {
         return res.status(500).json({ message: "Failed to get channel", error: error.message });
     }
 };
+
+
+
