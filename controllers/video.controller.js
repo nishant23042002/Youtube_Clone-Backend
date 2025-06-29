@@ -1,4 +1,6 @@
 import Video from "../models/Video.model.js"
+import Channel from "../models/Channel.model.js";
+
 
 
 
@@ -63,21 +65,33 @@ export const updateVideo = async (req, res) => {
     }
 };
 
-// Delete video
-export const deleteVideo = async (req, res) => {
-    try {
-        const { id } = req.params;
 
-        const video = await Video.findById(id);
-        if (!video) return res.status(404).json({ message: "Video not found" });
+// DELETE a video by videoId only (must belong to channel owned by the user)
+export const deleteVideoByOwner = async (req, res) => {
+  try {
+    const { videoId } = req.params;
+    const userId = req.userName._id; 
 
-
-        await video.deleteOne();
-        res.status(200).json({ message: "Video deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Failed to delete video", error: error.message });
+    // Find the channel of the logged-in user
+    const channel = await Channel.findOne({ owner: userId });
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found for this user" });
     }
+
+    // Check if the video belongs to the user's channel
+    const video = await Video.findOne({ _id: videoId, channelId: channel._id });
+    if (!video) {
+      return res.status(403).json({ message: "Unauthorized: Video does not belong to your channel" });
+    }
+
+    await Video.findByIdAndDelete(videoId);
+
+    return res.status(200).json({ message: "Video deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to delete video", error: error.message });
+  }
 };
+
 
 
 
