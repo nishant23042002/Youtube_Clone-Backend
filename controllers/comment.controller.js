@@ -93,3 +93,13 @@ export const editComment = async (req, res) => {
         return res.status(500).json({ message: "Failed to edit comment", error: err.message });
     }
 };
+
+
+export const deleteAllComment = async (req, res) => {
+    try {
+        const deleteAllCommetns = await Comment.deleteMany({})
+        res.json({ message: "Deleted all comments", comments: deleteAllCommetns })
+    } catch (err) {
+        return res.status(500).json({ message: "Failed to delete comments", error: err.message });
+    }
+}
